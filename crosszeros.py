@@ -1,7 +1,9 @@
 import pygame
 from enum import Enum
 
-CELL_SIZE = 50
+CELL_SIZE = 60
+HEIGHT = 3
+WIDTH = 3
 FPS = 60
 
 
@@ -23,8 +25,8 @@ class Player:
 class GameField:
 
     def __init__(self):
-        self.height = 3
-        self.width = 3
+        self.height = HEIGHT
+        self.width = WIDTH
         self.cells = [[Cell.VOID] * self.height for i in range(self.width)]
 
 
@@ -33,15 +35,20 @@ class GameFieldView:
     Game field widget, who draws him in window and finds out place of click
     """
 
-    def __init__(self, field: GameField):
+    def __init__(self, field: GameField, screen):
         # upload pics of cells
         # draw field
         self.field = field
+        self.screen = screen
         self.height = field.height * CELL_SIZE
         self.width = field.width * CELL_SIZE
 
     def draw(self):
-        pass
+        for i in range(WIDTH + 1):
+            pygame.draw.line(self.screen, (0, 0, 0), [30 + i * CELL_SIZE, 30], [30 + i * CELL_SIZE, self.height + 30], 2)
+
+        for i in range(HEIGHT + 1):
+            pygame.draw.line(self.screen, (0, 0, 0), [30, 30 + i * CELL_SIZE], [self.width + 30, 30 + i * CELL_SIZE], 2)
 
     def check_coords_correct(self, x, y):
         return True
@@ -78,16 +85,17 @@ class GameWindow:
         pygame.init()
 
         # Window
-        self._width = 300
-        self._height = 400
+        self._width = WIDTH * CELL_SIZE + 60
+        self._height = HEIGHT * CELL_SIZE + 60
         self._title = "Crosses & Zeroes"
         self._screen = pygame.display.set_mode([self._width, self._height])
         pygame.display.set_caption(self._title)
+        self._screen.fill((255, 255, 255))
 
         player1 = Player("Петя", Cell.CROSS)
         player2 = Player("Вася", Cell.ZERO)
         self._game_manager = GameRoundManager(player1, player2)
-        self._field_widget = GameFieldView(self._game_manager.field)
+        self._field_widget = GameFieldView(self._game_manager.field, self._screen)
 
     def mainloop(self):
         finished = False
@@ -100,7 +108,8 @@ class GameWindow:
                     x, y = pygame.mouse.get_pos()
                     if self._field_widget.check_coords_correct(x,y):
                         i, j = self._field_widget.get_coords(x,y)
-                        self._game_manager.handle_click(i, j)
+                        self._game_manager.handle_click(x, y)########
+            self._field_widget.draw()
             pygame.display.flip()
             clock.tick(FPS)
 
