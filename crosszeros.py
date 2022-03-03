@@ -71,7 +71,11 @@ class GameRoundManager:
 
     def handle_click(self, i, j):
         player = self._players[self._current_player]
+        if self.field.cells[i][j] == Cell.VOID:
+            self.field.cells[i][j] = player.type
+            self._current_player = len(self._players) - self._current_player - 1
         print(f"click_handled, {i, j}")
+        print(self.field.cells)
 
 
 class GameWindow:
@@ -92,8 +96,8 @@ class GameWindow:
         pygame.display.set_caption(self._title)
         self._screen.fill((255, 255, 255))
 
-        player1 = Player("Петя", Cell.CROSS)
-        player2 = Player("Вася", Cell.ZERO)
+        player1 = Player("1", Cell.CROSS)
+        player2 = Player("2", Cell.ZERO)
         self._game_manager = GameRoundManager(player1, player2)
         self._field_widget = GameFieldView(self._game_manager.field, self._screen)
 
