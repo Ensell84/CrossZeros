@@ -35,6 +35,7 @@ class GameField:
     def get_cell_state(self, i, j):
         return self.cells[i][j]
 
+
 class GameFieldView:
     """
     Game field widget, who draws him in window and finds out place of click
@@ -78,7 +79,6 @@ class GameFieldView:
 
     def get_coords(self, x, y):
         return (x-30)//CELL_SIZE, (y-30)//CELL_SIZE
-
 
 
 class GameRoundManager:
