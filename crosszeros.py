@@ -51,17 +51,17 @@ class GameFieldView:
             pygame.draw.line(self.screen, (0, 0, 0), [30, 30 + i * CELL_SIZE], [self.width + 30, 30 + i * CELL_SIZE], 2)
 
     def check_coords_correct(self, x, y):
-        return True
-        # TODO self.height and width
+        if 30 < x < self.width + 30 and 30 < y < self.height + 30:
+            return True
 
     def get_coords(self, x, y):
-        return 0, 0
-        # TODO calculate
+        return (x-30)//CELL_SIZE, (y-30)//CELL_SIZE
+
 
 
 class GameRoundManager:
     """
-    Manager of game. Runs all processes.
+    Manager of game. Runs all processes. + Draws Cells.
     """
 
     def __init__(self, player1: Player, player2: Player):
@@ -108,7 +108,7 @@ class GameWindow:
                     x, y = pygame.mouse.get_pos()
                     if self._field_widget.check_coords_correct(x,y):
                         i, j = self._field_widget.get_coords(x,y)
-                        self._game_manager.handle_click(x, y)########
+                        self._game_manager.handle_click(i, j)
             self._field_widget.draw()
             pygame.display.flip()
             clock.tick(FPS)
