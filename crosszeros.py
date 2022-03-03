@@ -83,7 +83,7 @@ class GameFieldView:
 
 class GameRoundManager:
     """
-    Manager of game. Runs all processes. + Draws Cells.
+    Manager of game. Runs all processes.
     """
 
     def __init__(self, player1: Player, player2: Player):
