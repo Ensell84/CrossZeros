@@ -1,7 +1,7 @@
 import pygame
 from enum import Enum
 
-CELL_SIZE = 60
+CELL_SIZE = 50
 HEIGHT = 3
 WIDTH = 3
 FPS = 60
@@ -29,6 +29,11 @@ class GameField:
         self.width = WIDTH
         self.cells = [[Cell.VOID] * self.height for i in range(self.width)]
 
+    def is_game_over(self):
+        pass
+
+    def get_cell_state(self, i, j):
+        return self.cells[i][j]
 
 class GameFieldView:
     """
@@ -49,6 +54,23 @@ class GameFieldView:
 
         for i in range(HEIGHT + 1):
             pygame.draw.line(self.screen, (0, 0, 0), [30, 30 + i * CELL_SIZE], [self.width + 30, 30 + i * CELL_SIZE], 2)
+
+        for i in range(WIDTH):
+            for j in range(HEIGHT):
+                if self.field.get_cell_state(i, j) == Cell.CROSS:
+                    pygame.draw.line(self.screen, (0, 0, 0), [30 + i * CELL_SIZE + CELL_SIZE * 0.2,
+                                                              30 + j * CELL_SIZE + CELL_SIZE * 0.2],
+                                                             [30 + i * CELL_SIZE + CELL_SIZE * 0.8,
+                                                              30 + j * CELL_SIZE + CELL_SIZE * 0.8], 5)
+                    pygame.draw.line(self.screen, (0, 0, 0), [30 + i * CELL_SIZE + CELL_SIZE * 0.2,
+                                                              30 + j * CELL_SIZE + CELL_SIZE * 0.8],
+                                                             [30 + i * CELL_SIZE + CELL_SIZE * 0.8,
+                                                              30 + j * CELL_SIZE + CELL_SIZE * 0.2], 5)
+
+                if self.field.get_cell_state(i, j) == Cell.ZERO:
+                    pygame.draw.circle(self.screen, (0, 0, 0),
+                                       (30 + i * CELL_SIZE + CELL_SIZE * 0.5,
+                                        30 + j * CELL_SIZE + CELL_SIZE * 0.5), CELL_SIZE * 0.38, 4)
 
     def check_coords_correct(self, x, y):
         if 30 < x < self.width + 30 and 30 < y < self.height + 30:
