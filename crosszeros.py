@@ -2,7 +2,7 @@ import pygame
 from enum import Enum
 
 CELL_SIZE = 50
-HEIGHT = 3
+HEIGHT = 20
 WIDTH = 3
 FPS = 60
 
@@ -31,6 +31,7 @@ class GameField:
 
     def is_game_over(self):
         pass
+        # TODO
 
     def get_cell_state(self, i, j):
         return self.cells[i][j]
